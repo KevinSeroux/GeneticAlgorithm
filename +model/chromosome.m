@@ -13,6 +13,9 @@ classdef chromosome
             % type: value in binary or real format
             % repr
             
+            % Allow preallocating array of chromosomes
+            if nargin == 0; return; end
+            
             assert(strcmp(type, 'bin') || strcmp(type, 'real'));
             
             obj.repr = repr;

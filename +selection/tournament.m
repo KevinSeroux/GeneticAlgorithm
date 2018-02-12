@@ -1,4 +1,4 @@
-function matingpool = tournament(pop, eval)
+function matingpool = tournament(pop, eval, count)
     % CONSTANTS
     k = 2;
     
@@ -6,12 +6,12 @@ function matingpool = tournament(pop, eval)
     N = length(individuals);
     matingpool = [];
     
-    permutations = zeros(k, N);
+    permutations = zeros(k, count);
     for j=1:k
-        permutations(j,:) = randperm(N);
+        permutations(j,:) = randperm(N, count);
     end
     
-    for i=1:N
+    for i=1:count
         pool = permutations(:,i);
         pool = arrayfun(@(idx) individuals(idx), pool);
         indiv = selectBestIndiv(pool, eval);

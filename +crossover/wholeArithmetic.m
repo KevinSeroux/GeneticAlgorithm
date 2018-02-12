@@ -1,18 +1,22 @@
-function child = wholeArithmetic(parents)
+function children = wholeArithmetic(parents)
     p1Chromos = parents(1).getChromosomes();
     p2Chromos = parents(2).getChromosomes();
     N = length(p1Chromos);
-    childChromos = [];
+    childrenChromos(2, N) = model.chromosome;
     
+    % Repeat for N chromosomes
     for i=1:N
         p1CurChromo = p1Chromos(i);
         p2CurChromo = p2Chromos(i);
         
-        childCurChromo = wholeArithmeticOnUniqueChromosome(p1CurChromo, p2CurChromo);
-        childChromos = [childChromos, childCurChromo];
+        childrenCurChromo = wholeArithmeticOnUniqueChromosome(p1CurChromo, p2CurChromo);
+        childrenChromos(:,i) = childrenCurChromo;
     end
     
-    child = model.individual(childChromos);
+    children = [ ...
+        model.individual(childrenChromos(1,:)), ...
+        model.individual(childrenChromos(2,:)) ...
+    ];
 end
 
 function chromosome = wholeArithmeticOnUniqueChromosome(p1, p2)
@@ -21,7 +25,11 @@ function chromosome = wholeArithmeticOnUniqueChromosome(p1, p2)
     p2 = p2.getReal();
     
     a = rand();
-    value = a*p1 + (1-a)*p2;
+    child1Value = a*p1 + (1-a)*p2;
+    child2Value = (1-a)*p1 + a*p2;
     
-    chromosome = model.chromosome('real', value, repr);
+    chromosome = [ ...
+        model.chromosome('real', child1Value, repr), ...
+        model.chromosome('real', child2Value, repr) ...
+    ];
 end
