@@ -6,7 +6,7 @@ function myconfig = negativeRosenbrock()
     ];
     myconfig.minimize = true;
     myconfig.objectiveFunc = @(args) config.objective.griewank(args);
-    myconfig.crossoverFun = @(parents) crossover.multipoint(parents, 2);
-    myconfig.display = {display.text()};
+    myconfig.crossoverFun = @(parents) crossover.wholeArithmetic(parents);
+    %myconfig.display = {display.text()};
 end
 
