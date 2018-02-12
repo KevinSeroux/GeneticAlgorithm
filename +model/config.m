@@ -7,7 +7,7 @@ classdef config
         minimize = false
         objectiveFunc       
         popSize = 10
-        matingPoolSize = 10
+        matingPoolSize = 5
         probMutation = 0.1
         parentsCount = 2
         display = {display.graph(), display.text()};

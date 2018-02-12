@@ -1,14 +1,14 @@
-function children = wholeArithmetic(parents)
+function children = localArithmetic(parents)
     chromosP1 = parents(1).getChromosomes();
     chromoRepr1 = chromosP1(1).getRepr();
     chromoRepr2 = chromosP1(2).getRepr();
     p1 = parents(1).getReals();
     p2 = parents(2).getReals();
     
-    a = rand();
-    b = 1 - a;
-    child1 = a*p1 + b*p2;
-    child2 = b*p1 + a*p2;
+    a = rand(1, 2);
+    b = [1 1] - a;
+    child1 = a.*p1 + b.*p2;
+    child2 = b.*p1 + a.*p2;
     
     chromosChild1 = [ ...
         model.chromosome('real', child1(1), chromoRepr1), ...

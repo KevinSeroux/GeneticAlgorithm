@@ -1,18 +1,22 @@
-function child = uniform(parents)
+function children = uniform(parents)
     p1Chromos = parents(1).getChromosomes();
     p2Chromos = parents(2).getChromosomes();
     N = length(p1Chromos);
-    childChromos = [];
+    childrenChromos(2, N) = model.chromosome;
     
+    % Repeat for N chromosomes
     for i=1:N
         p1CurChromo = p1Chromos(i);
         p2CurChromo = p2Chromos(i);
         
-        childCurChromo = uniformOnUniqueChromosome(p1CurChromo, p2CurChromo);
-        childChromos = [childChromos, childCurChromo];
+        childrenCurChromo = uniformOnUniqueChromosome(p1CurChromo, p2CurChromo);
+        childrenChromos(:,i) = childrenCurChromo;
     end
     
-    child = model.individual(childChromos);
+    children = [ ...
+        model.individual(childrenChromos(1,:)), ...
+        model.individual(childrenChromos(2,:)) ...
+    ];
 end
 
 function chromo = uniformOnUniqueChromosome(p1, p2)
