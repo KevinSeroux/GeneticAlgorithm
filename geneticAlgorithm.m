@@ -45,13 +45,40 @@ classdef geneticAlgorithm
                 parents = arrayfun(@(idx) matingPool(idx), parentsIdx);
 
                 % crossover can give birth of 2 children
-                children = obj.config.crossoverFun(parents);
+                children = obj.crossover(parents);
 
                 for j=1:length(children)
                     children(j) = obj.config.mutationFun(children(j), obj.config.probMutation);
                 end
 
                 offspring = [offspring, children];
+            end
+        end
+        
+        function children = crossover(obj, parents)
+            countParents = length(parents);
+            countChromos = length(obj.config.chromosRepr);
+            % A row = an individual with several chromosomes as columns
+            parentsChromos(countParents, countChromos) = model.chromosome;
+            for i=1:countParents
+                parentsChromos(i,:) = parents(i).getChromosomes();
+            end
+            
+            % Iterate over the chromosomes (columns in parentsChromos)
+            childrenChromos = [];
+            for i=1:countChromos
+                parentsCurChromo = parentsChromos(:,i);
+                crossoveredChromos = obj.config.crossoverFun(parentsCurChromo);
+                childrenChromos = [childrenChromos, crossoveredChromos]; %#ok<AGROW>
+            end
+            
+            countChildren = length(childrenChromos) / countChromos;
+            childrenChromos = reshape(childrenChromos, [countChildren, countChromos]);
+            children(countChildren) = model.individual;
+            
+            % For each child
+            for i=1:countChildren
+                children(i) = model.individual(childrenChromos(i,:));
             end
         end
     end

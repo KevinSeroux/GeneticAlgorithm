@@ -5,6 +5,8 @@ classdef individual
     
     methods
         function obj = individual(chromosomes)
+            if nargin == 0; return; end % Allow preallocation
+                
             obj.chromosomes = chromosomes;
         end
         

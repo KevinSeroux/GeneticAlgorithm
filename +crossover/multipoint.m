@@ -1,39 +1,30 @@
-function children = multipoint(parents, k)  
-    p1Chromos = parents(1).getChromosomes();
-    p2Chromos = parents(2).getChromosomes();
-    N = length(p1Chromos);
-    childrenChromos(2, N) = model.chromosome;
+function chromos = multipoint(parents, k)
+    assert(length(parents) == 2);
     
-    % Repeat for N chromosomes
-    for i=1:N
-        p1CurChromo = p1Chromos(i);
-        p2CurChromo = p2Chromos(i);
-        
-        childrenCurChromo = multipointOnUniqueChromosome(p1CurChromo, p2CurChromo, k);
-        childrenChromos(:,i) = childrenCurChromo;
-    end
-    
-    children = [ ...
-        model.individual(childrenChromos(1,:)), ...
-        model.individual(childrenChromos(2,:)) ...
-    ];
-end
-
-function chromosome = multipointOnUniqueChromosome(p1, p2, k)
+    p1 = parents(1);
+    p2 = parents(2);
     repr = p1.getRepr();
     p1 = p1.getBin();
     p2 = p2.getBin();
-    
     len = length(p1);
-    points = [0, sort(randperm(len, k)), len];
-    mask = [];
     
-    for i=2:length(points)
-        bit = mod(i-1, 2) + '0';
-        repeat = points(i) - points(i - 1);
-        mask = [mask, repmat(bit, 1, repeat)];
+    points = [sort(randperm(len, k)), len];
+    
+    mask = repmat('1', 1, len);
+    i = 1;
+    while i < length(points)
+        from = points(i);
+        to = points(i + 1);
+        mask(from:to) = '0';
+        i = i + 2;
     end
+    inverseMask = utils.inverseMask(mask);
     
-    binChromosome = utils.applyMask(p1, p2, mask);
-    chromosome = model.chromosome('bin', binChromosome, repr);
+    child1 = utils.applyMask(p1, p2, mask);
+    child2 = utils.applyMask(p1, p2, inverseMask);
+    
+    chromos = [ ...
+        model.chromosome('bin', child1, repr), ...
+        model.chromosome('bin', child2, repr) ...
+    ];
 end
