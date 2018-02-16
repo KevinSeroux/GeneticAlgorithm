@@ -1,11 +1,4 @@
-function mutant = normal(indiv)
-    chromos = indiv.getChromosomes();
-    mutatedChromos = arrayfun(@(chromo) mutateChromosome(chromo), chromos);
-    
-    mutant = model.individual(mutatedChromos);
-end
-
-function mutatedChromo = mutateChromosome(chromosome)    
+function mutatedChromo = normal(chromosome)    
     repr = chromosome.getRepr();
     real = chromosome.getReal(); 
     

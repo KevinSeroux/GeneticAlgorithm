@@ -1,11 +1,4 @@
-function mutant = nonUniform(gen, indiv, config)
-    chromos = indiv.getChromosomes();
-    mutatedChromos = arrayfun(@(chromo) mutateChromosome(gen, chromo, config), chromos);
-    
-    mutant = model.individual(mutatedChromos);
-end
-
-function mutatedChromo = mutateChromosome(gen, chromosome, config)    
+function mutatedChromo = nonUniform(gen, chromosome, config)    
     repr = chromosome.getRepr();
     
     real = chromosome.getReal();    

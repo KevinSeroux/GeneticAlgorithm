@@ -5,7 +5,8 @@ function myconfig = negativeRosenbrock()
         model.chromosomeRepr(0, 3, 53, true)
     ];
     %myconfig.display = {display.text()};
+    myconfig.probMutation = 0.5; % Because we have only 2 real genes
     myconfig.objectiveFunc = @(args) config.objective.negativeRosenbrock(args);
     myconfig.crossoverFun = @(parents) crossover.simulatedBinary(parents);
-    myconfig.mutationFun = @(gen, child) mutation.polynomial(child, myconfig);
+    myconfig.mutationFun = @(gen, chromo) mutation.uniform(chromo);
 end

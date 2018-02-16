@@ -1,11 +1,4 @@
-function mutant = polynomial(indiv, config)
-    chromos = indiv.getChromosomes();
-    mutatedChromos = arrayfun(@(chromo) mutateChromosome(chromo, config), chromos);
-    
-    mutant = model.individual(mutatedChromos);
-end
-
-function mutatedChromo = mutateChromosome(chromosome, config)    
+function mutatedChromo = polynomial(chromosome, config)    
     repr = chromosome.getRepr();
     real = chromosome.getReal(); 
     n = config.polynomialNFactor;
@@ -20,5 +13,5 @@ function mutatedChromo = mutateChromosome(chromosome, config)
     dmax = min(repr.max - real, real - repr.min);
     value = real + dmax * xi;
         
-    mutatedChromo = model.chromosome('real', value, repr());
+    mutatedChromo = model.chromosome('real', value, repr);
 end

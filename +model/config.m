@@ -34,7 +34,7 @@ classdef config
             % Functions always last
             obj.selectionFun = @(pop, eval, count) selection.tournament(pop, eval, count);
             obj.crossoverFun = @(parents) crossover.uniform(parents);
-            obj.mutationFun = @(gen, child) mutation.uniform(gen, child, obj);
+            obj.mutationFun = @(gen, chromo) mutation.polynomial(chromo, obj);
             obj.replacementFun = @(parent, offspring, eval) replacement.steadyState(parent, offspring, eval);
         end
     end

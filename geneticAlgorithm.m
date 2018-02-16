@@ -46,10 +46,7 @@ classdef geneticAlgorithm
 
                 % crossover can give birth of 2 children
                 children = obj.crossover(parents);
-
-                for j=1:length(children)
-                    children(j) = obj.config.mutationFun(obj.generation, children(j));
-                end
+                children = obj.mutation(children);
 
                 offspring = [offspring, children];
             end
@@ -71,6 +68,27 @@ classdef geneticAlgorithm
             children(countChildren) = model.individual;
             for i=1:countChildren
                 children(i) = model.individual(childrenChromos(i,:));
+            end
+        end
+        
+        function mutatedChildren = mutation(obj, children)
+            countChildren = length(children);
+            countChromosomes = length(obj.config.chromosRepr);
+            mutatedChildren(countChildren) = model.individual;
+            
+            for i=1:countChildren
+                chromos = children(i).getChromosomes();
+                
+                for j=1:countChromosomes
+                    draw = rand();
+                    
+                    % Probability of mutation for each gene
+                    if draw <= obj.config.probMutation
+                        chromos(j) = obj.config.mutationFun(obj.generation, chromos(j));
+                    end
+                end
+                
+                mutatedChildren(i) = model.individual(chromos);
             end
         end
     end
