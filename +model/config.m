@@ -32,7 +32,7 @@ classdef config
             obj.polynomialNFactor = 2;
             obj.display = {display.graph(), display.text()};
             % Functions always last
-            obj.selectionFun = @(pop, eval, count) selection.tournament(pop, eval, count);
+            obj.selectionFun = @(pop, eval) selection.tournament(pop, eval, obj.matingPoolSize);
             obj.crossoverFun = @(parents) crossover.uniform(parents);
             obj.mutationFun = @(gen, chromo) mutation.polynomial(chromo, obj);
             obj.replacementFun = @(parent, offspring, eval) replacement.steadyState(parent, offspring, eval);

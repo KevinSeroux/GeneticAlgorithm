@@ -22,6 +22,10 @@ classdef population
         function obj = addIndividual(obj, indiv)
             obj.pop = [obj.pop, indiv];
         end
+        
+        function value = count(obj)
+            value = length(obj.pop);
+        end
     end
 end
 

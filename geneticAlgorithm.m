@@ -24,7 +24,7 @@ classdef geneticAlgorithm
         function obj = iteration(obj)
             obj.generation = obj.generation + 1;
             
-            matingPool = obj.config.selectionFun(obj.pop, obj.eval, obj.config.matingPoolSize);
+            matingPool = obj.config.selectionFun(obj.pop, obj.eval);
             offspring = obj.crossoverAndMutation(matingPool);
             obj.pop = obj.config.replacementFun(obj.pop, offspring, obj.eval);
             
