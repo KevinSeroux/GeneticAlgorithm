@@ -41,11 +41,41 @@ classdef chromosome
             repr = obj.repr;
         end
         
-        function obj = setReal(obj, yReal)
-            obj.value = utils.real2Bin(yReal, obj.repr);
+        function obj = setReal(obj, real)  
+            if real < obj.repr.min || real > obj.repr.max
+                real = obj.handleOverflow(real);
+            end
+            
+            obj.value = utils.real2Bin(real, obj.repr);
+        end
+        
+        function value = handleOverflow(obj, real)            
+            if obj.repr.truncate
+                value = obj.truncat(real);
+            else
+                value = obj.reduce(real);
+            end
+        end
+        
+        function value = truncat(obj, real)
+            if real < obj.repr.min
+                value = obj.repr.min;
+            elseif real > obj.repr.max
+                value = obj.repr.max;
+            end
+        end
+        
+        function value = reduce(obj, real)
+            if real < obj.repr.min
+                value = 2 * obj.repr.min - real;
+            elseif real > obj.repr.max
+                value = 2 * obj.repr.max - real;
+            end
         end
         
         function obj = setBin(obj, bin)
+            assert(length(bin) == obj.repr.bitLength);
+            
             obj.value = bin;
         end
     end

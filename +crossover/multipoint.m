@@ -1,4 +1,13 @@
-function chromos = multipoint(parents, k)
+function children = multipoint(parents, k)
+    assert(size(parents, 1) == 2);
+    
+    children = crossover.utils.forEachChromosome(...
+        @(parentsSameChromo) atomicCrossover(parentsSameChromo, k), ...
+        parents ...
+    );
+end
+
+function children = atomicCrossover(parents, k)
     assert(length(parents) == 2);
     
     p1 = parents(1);
@@ -23,7 +32,7 @@ function chromos = multipoint(parents, k)
     child1 = utils.applyMask(p1, p2, mask);
     child2 = utils.applyMask(p1, p2, inverseMask);
     
-    chromos = [ ...
+    children = [ ...
         model.chromosome('bin', child1, repr), ...
         model.chromosome('bin', child2, repr) ...
     ];

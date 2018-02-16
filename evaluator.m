@@ -61,6 +61,27 @@ classdef evaluator
             bestIndiv = obj.getBestIndividual(pop);
             value = obj.getValue(bestIndiv);
         end
+        
+        function worstIndiv = getWorstIndividual(obj, pop)
+            worstIndiv = nan;
+            worstFit = inf;
+            indivs = pop.getIndividuals();
+            
+            for i=1:length(indivs)
+                curIndiv = indivs(i);
+                curFit = obj.getFitness(curIndiv);
+                
+                if curFit < worstFit
+                    worstFit = curFit;
+                    worstIndiv = curIndiv;
+                end
+            end
+        end
+        
+        function value = getWorstValue(obj, pop)
+            worstIndiv = obj.getWorstIndividual(pop);
+            value = obj.getValue(worstIndiv);
+        end
     end
 end
 

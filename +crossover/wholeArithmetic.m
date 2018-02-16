@@ -1,4 +1,13 @@
 function children = wholeArithmetic(parents)
+    assert(size(parents, 1) == 2);
+    
+    children = crossover.utils.forEachChromosome(...
+        @(parentsSameChromo) atomicCrossover(parentsSameChromo), ...
+        parents ...
+    );
+end
+
+function children = atomicCrossover(parents)
     chromoP1 = parents(1);
     chromoP2 = parents(2);
     chromoRepr = chromoP1.getRepr();

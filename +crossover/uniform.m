@@ -1,6 +1,13 @@
-function chromos = uniform(parents)
-    assert(length(parents) == 2);
+function children = uniform(parents)
+    assert(size(parents, 1) == 2);
+    
+    children = crossover.utils.forEachChromosome(...
+        @(parentsSameChromo) atomicCrossover(parentsSameChromo), ...
+        parents ...
+    );
+end
 
+function children = atomicCrossover(parents)
     p1 = parents(1);
     p2 = parents(2);
     repr = p1.getRepr();
@@ -13,7 +20,7 @@ function chromos = uniform(parents)
     child1 = utils.applyMask(p1, p2, mask);
     child2 = utils.applyMask(p1, p2, inverseMask);
     
-    chromos = [ ...
+    children = [ ...
         model.chromosome('bin', child1, repr), ...
         model.chromosome('bin', child2, repr) ...
     ];

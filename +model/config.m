@@ -4,17 +4,39 @@ classdef config
     
     properties
         chromosRepr
-        minimize = false
+        minimize
         objectiveFunc       
-        popSize = 10
-        matingPoolSize = 5
-        probMutation = 0.1
-        parentsCount = 2
-        display = {display.graph(), display.text()};
-        selectionFun = @(pop, eval, count) selection.tournament(pop, eval, count);
-        crossoverFun = @(parents) crossover.uniform(parents);
-        mutationFun = @(child, probMuta) mutation.uniform(child, probMuta);
-        replacementFun = @(parent, offspring, eval) replacement.steadyState(parent, offspring, eval);
+        popSize
+        parentsCount
+        matingPoolSize
+        probMutation
+        maxGen
+        temperatureBFactor
+        polynomialNFactor
+        display
+        selectionFun
+        crossoverFun
+        mutationFun
+        replacementFun
+    end
+    
+    methods
+        function obj = config()
+            obj.minimize = false;
+            obj.popSize = 10;
+            obj.parentsCount = 2;
+            obj.matingPoolSize = obj.popSize / obj.parentsCount;
+            obj.probMutation = 0.1;
+            obj.maxGen = 100;
+            obj.temperatureBFactor = 1.5;
+            obj.polynomialNFactor = 2;
+            obj.display = {display.graph(), display.text()};
+            % Functions always last
+            obj.selectionFun = @(pop, eval, count) selection.tournament(pop, eval, count);
+            obj.crossoverFun = @(parents) crossover.uniform(parents);
+            obj.mutationFun = @(gen, child) mutation.uniform(gen, child, obj);
+            obj.replacementFun = @(parent, offspring, eval) replacement.steadyState(parent, offspring, eval);
+        end
     end
 end
 

@@ -14,7 +14,7 @@ classdef geneticAlgorithm
         end
         
         function pop = run(obj)
-            while 1
+            while obj.generation < obj.config.maxGen
                 obj = obj.iteration();
             end
             
@@ -48,7 +48,7 @@ classdef geneticAlgorithm
                 children = obj.crossover(parents);
 
                 for j=1:length(children)
-                    children(j) = obj.config.mutationFun(children(j), obj.config.probMutation);
+                    children(j) = obj.config.mutationFun(obj.generation, children(j));
                 end
 
                 offspring = [offspring, children];
@@ -64,19 +64,11 @@ classdef geneticAlgorithm
                 parentsChromos(i,:) = parents(i).getChromosomes();
             end
             
-            % Iterate over the chromosomes (columns in parentsChromos)
-            childrenChromos = [];
-            for i=1:countChromos
-                parentsCurChromo = parentsChromos(:,i);
-                crossoveredChromos = obj.config.crossoverFun(parentsCurChromo);
-                childrenChromos = [childrenChromos, crossoveredChromos]; %#ok<AGROW>
-            end
+            childrenChromos = obj.config.crossoverFun(parentsChromos);
+            countChildren = size(childrenChromos, 1);
             
-            countChildren = length(childrenChromos) / countChromos;
-            childrenChromos = reshape(childrenChromos, [countChildren, countChromos]);
+            % Build children individuals
             children(countChildren) = model.individual;
-            
-            % For each child
             for i=1:countChildren
                 children(i) = model.individual(childrenChromos(i,:));
             end
